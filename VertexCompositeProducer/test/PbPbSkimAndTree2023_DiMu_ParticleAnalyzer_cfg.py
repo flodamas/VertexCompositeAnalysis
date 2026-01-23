@@ -14,7 +14,7 @@ process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 
 # Define the input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/hidata/HIRun2023A/HIForward0/AOD/PromptReco-v2/000/375/202/00000/76e6c739-a417-4ea2-8176-6b2fbec3c7c8.root"),
+    fileNames = cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/hidata/HIRun2023A/HIForward0/AOD/16Jan2024-v1/30001/cf9a9504-fa7f-4d1e-a9fa-91b5e40271f3.root"),
 )
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 
@@ -50,8 +50,8 @@ process.diMu = generalParticles.clone(
     preSelection = diMuSelection,
     # daughter information
     daughterInfo = cms.VPSet([
-        cms.PSet(pdgId = cms.uint32(13), charge = cms.int32(+1), selection = muonSelection),
-        cms.PSet(pdgId = cms.uint32(13), charge = cms.int32(-1), selection = muonSelection),
+        cms.PSet(pdgId = cms.uint32(13), charge = cms.int32(+1), selection = muonSelection, propToMuon = cms.bool(True)),
+        cms.PSet(pdgId = cms.uint32(13), charge = cms.int32(-1), selection = muonSelection, propToMuon = cms.bool(True)),
     ]),
     muons = cms.InputTag('patMuons')
 )
@@ -152,32 +152,33 @@ process.diMuAna = particleAna.clone(
   ),
   triggerInfo = cms.untracked.VPSet([
     # UPC muon triggers
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_BptxAND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2AND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2AND_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2OR_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2OR_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_BptxAND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2AND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2AND_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2OR_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2OR_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_BptxAND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2AND_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2AND_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2OR_MaxPixelCluster1000_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2OR_v*')),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_BptxAND_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuCosmicBptxAND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2AND_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuCosmicNotMBHF2AND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2AND_v*'), filter = cms.string('hltL1sSingleMuCosmicNotMBHF2AND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2OR_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuCosmicNotMBHF2OR'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuCosmic_NotMBHF2OR_v*'), filter = cms.string('hltL1sSingleMuCosmicNotMBHF2OR'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_BptxAND_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuOpenBptxAND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2AND_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuOpenNotMBHF2AND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2AND_v*'), filter = cms.string('hltL1sSingleMuOpenNotMBHF2AND'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2OR_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuOpenNotMBHF2OR'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_NotMBHF2OR_v*'), filter = cms.string('hltL1sSingleMuOpenNotMBHF2OR'), minN = cms.int32(1)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_BptxAND_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuOpenORSingleMuCosmicEMTFBptxAND'), minN = cms.int32(1), isL1OR = cms.bool(True)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2AND_MaxPixelCluster1000_v*'), filter = cms.string('ltL1sSingleMuOpenORSingleMuCosmicEMTFNotMBHF2AND'), minN = cms.int32(1), isL1OR = cms.bool(True)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2AND_v*'), filter = cms.string('hltL1sSingleMuOpenORSingleMuCosmicEMTFNotMBHF2AND'), minN = cms.int32(1), isL1OR = cms.bool(True)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2OR_MaxPixelCluster1000_v*'), filter = cms.string('hltL1sSingleMuOpenORSingleMuCosmicEMTFNotMBHF2OR'), minN = cms.int32(1), isL1OR = cms.bool(True)),
+    cms.PSet(path = cms.string('HLT_HIUPC_SingleMuOpen_OR_SingleMuCosmic_EMTF_NotMBHF2OR_v*'), filter = cms.string('hltL1sSingleMuOpenORSingleMuCosmicEMTFNotMBHF2OR'), minN = cms.int32(1), isL1OR = cms.bool(True)),
     # UPC zero bias triggers
     cms.PSet(path = cms.string('HLT_HIZeroBias_v*')),
     cms.PSet(path = cms.string('HLT_HIZeroBias_HighRate_v*')),
     cms.PSet(path = cms.string('HLT_HIUPC_ZeroBias_SinglePixelTrack_MaxPixelTrack_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_ZeroBias_SinglePixelTrackLowPt_MaxPixelCluster400_v*')),
+    cms.PSet(path = cms.string('HLT_HIUPC_ZeroBias_SinglePixelTrackLowPt_MaxPixelCluster400_v*'), filter = cms.string('hltSinglePixelTrackLowPtForUPC'), minN = cms.int32(1)),
     cms.PSet(path = cms.string('HLT_HIUPC_ZeroBias_MinPixelCluster400_MaxPixelCluster10000_v*')),
     # UPC ZDC triggers
     cms.PSet(path = cms.string('HLT_HIUPC_ZDC1nOR_SinglePixelTrack_MaxPixelTrack_v*')),
-    cms.PSet(path = cms.string('HLT_HIUPC_ZDC1nOR_SinglePixelTrackLowPt_MaxPixelCluster400_v*')),
+    cms.PSet(path = cms.string('HLT_HIUPC_ZDC1nOR_SinglePixelTrackLowPt_MaxPixelCluster400_v*'), filter = cms.string('hltSinglePixelTrackLowPtForUPC'), minN = cms.int32(1)),
     cms.PSet(path = cms.string('HLT_HIUPC_ZDC1nOR_MinPixelCluster400_MaxPixelCluster10000_v*')),
   ]),
+  addTrgObj = cms.untracked.bool(True)
 )
 
 # Define the output
