@@ -8,7 +8,7 @@ cd CMSSW_13_2_15/src
 
 cmsenv
 
-git clone -b ParticleFitter_13_2_X https://github.com/davidlw/VertexCompositeAnalysis
+git clone -b ParticleFitter_13_2_X https://github.com/stahlleiton/VertexCompositeAnalysis
 
 cd VertexCompositeAnalysis
 
